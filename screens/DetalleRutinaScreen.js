@@ -16,30 +16,32 @@ import { useApp } from '../context/AppContext';
 
 const { width, height } = Dimensions.get('window');
 
-// Datos de ejercicios por defecto (fallback)
+// Datos de ejercicios por defecto (fallback) con GIFs
 const ejerciciosDataDefault = {
   'Calentamiento': [
-    { nombre: 'Saltos de Tijera', duracion: 30, musculo: 'Cuerpo Completo', icono: 'fitness' },
-    { nombre: 'Círculos de Brazos', duracion: 30, musculo: 'Hombros', icono: 'refresh' },
-    { nombre: 'Rodillas Altas', duracion: 30, musculo: 'Piernas', icono: 'walk' },
-    { nombre: 'Rotación de Cadera', duracion: 20, musculo: 'Core', icono: 'sync' },
+    { nombre: 'Saltos de Tijera', duracion: 30, musculo: 'Cuerpo Completo', icono: 'fitness', gif: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnR3ejJkMWRkOW9wNHcwZDN3dm43YzJkOXdpeGEzNjMxcXJzdWk0ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ckMk3RKUK29lziaspI/giphy.gif' },
+    { nombre: 'Círculos de Brazos', duracion: 30, musculo: 'Hombros', icono: 'refresh', gif: 'https://media.giphy.com/media/3o7TKFVl5Ls3DLmjBK/giphy.gif' },
+    { nombre: 'Rodillas Altas', duracion: 30, musculo: 'Piernas', icono: 'walk', gif: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODFlb3JvZmlqNmhtam16NGxpZmdmODhhNDV6b3ljazZhZm92ZDVnYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/62aGqZoUJYtPsl0Hb0/giphy.gif' },
+    { nombre: 'Rotación de Cadera', duracion: 20, musculo: 'Core', icono: 'sync', gif: 'https://media.giphy.com/media/3oKIPjHCmuXqdVvak0/giphy.gif' },
   ],
   'Entrenamiento Principal': [
-    { nombre: 'Giros Abdominales', duracion: 30, musculo: 'Abdominales', icono: 'ellipse' },
-    { nombre: 'Sentadillas', duracion: 40, musculo: 'Piernas', icono: 'trending-down' },
-    { nombre: 'Quemadores de Cadera', duracion: 20, musculo: 'Glúteos', icono: 'diamond' },
-    { nombre: 'Pasos Laterales', duracion: 20, musculo: 'Piernas', icono: 'footsteps' },
-    { nombre: 'Escaladores', duracion: 40, musculo: 'Core', icono: 'trending-up' },
-    { nombre: 'Burpees', duracion: 30, musculo: 'Cuerpo Completo', icono: 'barbell' },
-    { nombre: 'Plancha', duracion: 45, musculo: 'Core', icono: 'remove' },
-    { nombre: 'Zancadas', duracion: 30, musculo: 'Piernas', icono: 'walk' },
-    { nombre: 'Flexiones', duracion: 30, musculo: 'Pecho', icono: 'diamond' },
+    { nombre: 'Giros Abdominales', duracion: 30, musculo: 'Abdominales', icono: 'ellipse', gif: 'https://media.giphy.com/media/xULW8v7LtZrgcaGvC0/giphy.gif' },
+    { nombre: 'Sentadillas', duracion: 40, musculo: 'Piernas', icono: 'trending-down', gif: 'https://media.giphy.com/media/1qfKN8Dt0CRdCRxz9q/giphy.gif' },
+    { nombre: 'Quemadores de Cadera', duracion: 20, musculo: 'Glúteos', icono: 'diamond', gif: 'https://media.giphy.com/media/3oz8xM1ZynfjCABAEo/giphy.gif' },
+    { nombre: 'Pasos Laterales', duracion: 20, musculo: 'Piernas', icono: 'footsteps', gif: 'https://media.giphy.com/media/3oz8xM1ZynfjCABAEo/giphy.gif' },
+    { nombre: 'Escaladores', duracion: 40, musculo: 'Core', icono: 'trending-up', gif: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExanowOGdyaGM3ZDZ2ZGRzeXY0M25tYWZpemtxNDhzNDZ0NnJzaDU3ZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bWYc47O3jSef6/giphy.gif' },
+    { nombre: 'Burpees', duracion: 30, musculo: 'Cuerpo Completo', icono: 'barbell', gif: 'https://media.giphy.com/media/23hPPMRgPxbNBlPQe3/giphy.gif' },
+    { nombre: 'Plancha', duracion: 45, musculo: 'Core', icono: 'remove', gif: 'https://media.giphy.com/media/xT8qBff8cRRFf7k2u4/giphy.gif' },
+    { nombre: 'Zancadas', duracion: 30, musculo: 'Piernas', icono: 'walk', gif: 'https://media.giphy.com/media/3oz8xM1ZynfjCABAEo/giphy.gif' },
+    { nombre: 'Flexiones', duracion: 30, musculo: 'Pecho', icono: 'diamond', gif: 'https://media.giphy.com/media/7YCC7NnFexWRFiYrFu/giphy.gif' },
+    { nombre: 'Jumping Jacks', duracion: 30, musculo: 'Cuerpo Completo', icono: 'fitness', gif: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnR3ejJkMWRkOW9wNHcwZDN3dm43YzJkOXdpeGEzNjMxcXJzdWk0ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ckMk3RKUK29lziaspI/giphy.gif' },
+    { nombre: 'Skipping', duracion: 30, musculo: 'Piernas', icono: 'walk', gif: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExenRma3RpNjl4NHc4cTZlMng1NGF6MXU1emJnZHA1Z200ZnB6b2NudSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Jmal4FUrHggfITICnv/giphy.gif' },
   ],
   'Enfriamiento': [
-    { nombre: 'Estiramiento de Cuádriceps', duracion: 30, musculo: 'Piernas', icono: 'body' },
-    { nombre: 'Estiramiento de Isquiotibiales', duracion: 30, musculo: 'Piernas', icono: 'body' },
-    { nombre: 'Postura del Niño', duracion: 45, musculo: 'Espalda', icono: 'flower' },
-    { nombre: 'Respiración Profunda', duracion: 60, musculo: 'Mente', icono: 'leaf' },
+    { nombre: 'Estiramiento de Cuádriceps', duracion: 30, musculo: 'Piernas', icono: 'body', gif: 'https://media.giphy.com/media/l3q2Ip7FrmPVDBulG/giphy.gif' },
+    { nombre: 'Estiramiento de Isquiotibiales', duracion: 30, musculo: 'Piernas', icono: 'body', gif: 'https://media.giphy.com/media/xT8qBvgKeMvMGSJNgA/giphy.gif' },
+    { nombre: 'Postura del Niño', duracion: 45, musculo: 'Espalda', icono: 'flower', gif: 'https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif' },
+    { nombre: 'Respiración Profunda', duracion: 60, musculo: 'Mente', icono: 'leaf', gif: 'https://media.giphy.com/media/krP2NRkLqnKEg/giphy.gif' },
   ],
 };
 
@@ -74,10 +76,11 @@ const formatDuration = (seconds) => {
   return `0:${secs.toString().padStart(2, '0')}`;
 };
 
-const ExerciseCard = memo(({ item, index, isActive }) => {
+const ExerciseCard = memo(({ item, index, isActive, onPress }) => {
   const cardScale = useRef(new Animated.Value(0.95)).current;
   const cardOpacity = useRef(new Animated.Value(0)).current;
   const hasAnimated = useRef(false);
+  const [showGif, setShowGif] = useState(false);
 
   useEffect(() => {
     if (!hasAnimated.current) {
@@ -100,40 +103,106 @@ const ExerciseCard = memo(({ item, index, isActive }) => {
     }
   }, []);
 
+  const handlePress = () => {
+    setShowGif(!showGif);
+    if (onPress) onPress(item);
+  };
+
+  // Obtener el GIF del ejercicio - prioriza el gif definido en el ejercicio
+  const getGifUrl = () => {
+    // Si el ejercicio tiene un GIF definido, usarlo directamente
+    if (item.gif) {
+      return item.gif;
+    }
+    
+    // Mapeo de respaldo para ejercicios sin GIF definido
+    const gifMap = {
+      'Saltos de Tijera': 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnR3ejJkMWRkOW9wNHcwZDN3dm43YzJkOXdpeGEzNjMxcXJzdWk0ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ckMk3RKUK29lziaspI/giphy.gif',
+      'Jumping Jacks': 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnR3ejJkMWRkOW9wNHcwZDN3dm43YzJkOXdpeGEzNjMxcXJzdWk0ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ckMk3RKUK29lziaspI/giphy.gif',
+      'Rodillas Altas': 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODFlb3JvZmlqNmhtam16NGxpZmdmODhhNDV6b3ljazZhZm92ZDVnYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/62aGqZoUJYtPsl0Hb0/giphy.gif',
+      'Burpees': 'https://media.giphy.com/media/23hPPMRgPxbNBlPQe3/giphy.gif',
+      'Escaladores': 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExanowOGdyaGM3ZDZ2ZGRzeXY0M25tYWZpemtxNDhzNDZ0NnJzaDU3ZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bWYc47O3jSef6/giphy.gif',
+      'Skipping': 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExenRma3RpNjl4NHc4cTZlMng1NGF6MXU1emJnZHA1Z200ZnB6b2NudSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Jmal4FUrHggfITICnv/giphy.gif',
+      'Flexiones': 'https://media.giphy.com/media/7YCC7NnFexWRFiYrFu/giphy.gif',
+      'Flexiones Explosivas': 'https://media.giphy.com/media/7YCC7NnFexWRFiYrFu/giphy.gif',
+      'Sentadillas': 'https://media.giphy.com/media/1qfKN8Dt0CRdCRxz9q/giphy.gif',
+      'Sentadillas con Salto': 'https://media.giphy.com/media/1qfKN8Dt0CRdCRxz9q/giphy.gif',
+      'Zancadas': 'https://media.giphy.com/media/3oz8xM1ZynfjCABAEo/giphy.gif',
+      'Plancha': 'https://media.giphy.com/media/xT8qBff8cRRFf7k2u4/giphy.gif',
+      'Plancha Lateral': 'https://media.giphy.com/media/3o6wrvdHFbwBrUFenu/giphy.gif',
+      'Fondos de Tríceps': 'https://media.giphy.com/media/3oriO6qJiXajN0TyDu/giphy.gif',
+      'Peso Muerto': 'https://media.giphy.com/media/xT8qBvH1pAhtfSx52U/giphy.gif',
+      'Press de Hombros': 'https://media.giphy.com/media/3o7TKFVl5Ls3DLmjBK/giphy.gif',
+      'Dominadas': 'https://media.giphy.com/media/xT8qB7Yqj5fmLLV1W8/giphy.gif',
+      'Abdominales Crunch': 'https://media.giphy.com/media/5t9IcXiBCyw60XPpGu/giphy.gif',
+      'Giros Abdominales': 'https://media.giphy.com/media/xULW8v7LtZrgcaGvC0/giphy.gif',
+      'Bicicleta': 'https://media.giphy.com/media/l0HlPwMAzh13pcZ20/giphy.gif',
+      'Elevación de Piernas': 'https://media.giphy.com/media/3oKIPtjElfqwMOTbH2/giphy.gif',
+      'Russian Twist': 'https://media.giphy.com/media/xULW8v7LtZrgcaGvC0/giphy.gif',
+      'Dead Bug': 'https://media.giphy.com/media/xT8qBit7YomT80d0M8/giphy.gif',
+      'Estiramiento de Cuádriceps': 'https://media.giphy.com/media/l3q2Ip7FrmPVDBulG/giphy.gif',
+      'Estiramiento de Isquiotibiales': 'https://media.giphy.com/media/xT8qBvgKeMvMGSJNgA/giphy.gif',
+      'Postura del Niño': 'https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif',
+      'Gato-Vaca': 'https://media.giphy.com/media/3oKIPavRPgJYaNI97W/giphy.gif',
+      'Mariposa': 'https://media.giphy.com/media/xULW8MYvpNOfMXfDH2/giphy.gif',
+      'Torsión Espinal': 'https://media.giphy.com/media/3oKIPjHCmuXqdVvak0/giphy.gif',
+      'Sprints en el Sitio': 'https://media.giphy.com/media/xTiTnqe0xmwvwJMrF6/giphy.gif',
+      'Círculos de Brazos': 'https://media.giphy.com/media/3o7TKFVl5Ls3DLmjBK/giphy.gif',
+      'Rotación de Cadera': 'https://media.giphy.com/media/3oKIPjHCmuXqdVvak0/giphy.gif',
+    };
+    return gifMap[item.nombre] || 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
+  };
+
   return (
-    <Animated.View
-      style={[
-        styles.exerciseCard,
-        isActive && styles.exerciseCardActive,
-        {
-          opacity: cardOpacity,
-          transform: [{ scale: cardScale }]
-        }
-      ]}
-    >
-      <View style={styles.exerciseLeft}>
-        <Text style={[styles.exerciseDuration, isActive && styles.exerciseDurationActive]}>
-          {formatDuration(item.duracion)}
-        </Text>
-      </View>
-      
-      <View style={styles.exerciseInfo}>
-        <Text style={[styles.exerciseName, isActive && styles.exerciseNameActive]}>
-          {item.nombre}
-        </Text>
-        <Text style={[styles.exerciseMuscle, isActive && styles.exerciseMuscleActive]}>
-          {item.musculo}
-        </Text>
-      </View>
-      
-      <View style={[styles.exerciseIcon, isActive && styles.exerciseIconActive]}>
-        <Ionicons 
-          name={item.icono} 
-          size={20} 
-          color={isActive ? '#000000' : '#666666'} 
-        />
-      </View>
-    </Animated.View>
+    <Pressable onPress={handlePress}>
+      <Animated.View
+        style={[
+          styles.exerciseCard,
+          isActive && styles.exerciseCardActive,
+          showGif && styles.exerciseCardExpanded,
+          {
+            opacity: cardOpacity,
+            transform: [{ scale: cardScale }]
+          }
+        ]}
+      >
+        <View style={styles.exerciseMainRow}>
+          <View style={styles.exerciseLeft}>
+            <Text style={[styles.exerciseDuration, isActive && styles.exerciseDurationActive]}>
+              {formatDuration(item.duracion)}
+            </Text>
+          </View>
+          
+          <View style={styles.exerciseInfo}>
+            <Text style={[styles.exerciseName, isActive && styles.exerciseNameActive]}>
+              {item.nombre}
+            </Text>
+            <Text style={[styles.exerciseMuscle, isActive && styles.exerciseMuscleActive]}>
+              {item.musculo}
+            </Text>
+          </View>
+          
+          <View style={[styles.exerciseIcon, isActive && styles.exerciseIconActive]}>
+            <Ionicons 
+              name={showGif ? 'chevron-up' : 'play-circle'} 
+              size={24} 
+              color={isActive ? '#000000' : '#4CAF50'} 
+            />
+          </View>
+        </View>
+        
+        {showGif && (
+          <View style={styles.gifContainer}>
+            <Image
+              source={{ uri: getGifUrl() }}
+              style={styles.exerciseGif}
+              resizeMode="cover"
+            />
+            <Text style={styles.gifHint}>Toca para cerrar</Text>
+          </View>
+        )}
+      </Animated.View>
+    </Pressable>
   );
 });
 
@@ -750,16 +819,41 @@ const styles = StyleSheet.create({
     color: '#8E8E93',
   },
   exerciseCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginHorizontal: 24,
     marginBottom: 10,
     padding: 16,
     backgroundColor: '#F9F9F9',
     borderRadius: 14,
   },
+  exerciseCardExpanded: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+  },
+  exerciseMainRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   exerciseCardActive: {
     backgroundColor: '#D4FF00',
+  },
+  gifContainer: {
+    marginTop: 12,
+    alignItems: 'center',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  exerciseGif: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+    backgroundColor: '#E0E0E0',
+  },
+  gifHint: {
+    marginTop: 8,
+    fontSize: 12,
+    color: '#8E8E93',
+    fontStyle: 'italic',
   },
   exerciseLeft: {
     width: 50,

@@ -311,7 +311,14 @@ export default function HomeScreen({ navigation }) {
             
             <View style={styles.menuUserInfo}>
               <View style={styles.menuAvatar}>
-                <Ionicons name="person" size={24} color="#D4FF00" />
+                {user?.avatar ? (
+                  <Image 
+                    source={{ uri: user.avatar }} 
+                    style={styles.menuAvatarImage}
+                  />
+                ) : (
+                  <Ionicons name="person" size={24} color="#D4FF00" />
+                )}
               </View>
               <View>
                 <Text style={styles.menuUserName}>{user?.nombre || 'Usuario'}</Text>
@@ -408,7 +415,7 @@ export default function HomeScreen({ navigation }) {
               onPress={() => navigation.getParent()?.navigate('Perfil')}
             >
               <Image 
-                source={{ uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100' }}
+                source={{ uri: user?.avatar || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100' }}
                 style={styles.profileImage}
               />
             </Pressable>
@@ -583,6 +590,70 @@ export default function HomeScreen({ navigation }) {
                   </View>
                 </View>
               </Pressable>
+            </View>
+
+            {/* Estadísticas Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>TUS ESTADÍSTICAS</Text>
+              <View style={styles.statsContainer}>
+                <View style={styles.statsCard}>
+                  <View style={styles.statsIconContainer}>
+                    <Ionicons name="flame" size={28} color="#FF6B6B" />
+                  </View>
+                  <Text style={styles.statsValue}>1,250</Text>
+                  <Text style={styles.statsLabel}>Calorías esta semana</Text>
+                </View>
+                <View style={styles.statsCard}>
+                  <View style={styles.statsIconContainer}>
+                    <Ionicons name="time" size={28} color="#4ECDC4" />
+                  </View>
+                  <Text style={styles.statsValue}>4h 30m</Text>
+                  <Text style={styles.statsLabel}>Tiempo entrenado</Text>
+                </View>
+              </View>
+              <View style={styles.statsContainer}>
+                <View style={styles.statsCard}>
+                  <View style={styles.statsIconContainer}>
+                    <Ionicons name="barbell" size={28} color="#A78BFA" />
+                  </View>
+                  <Text style={styles.statsValue}>12</Text>
+                  <Text style={styles.statsLabel}>Entrenamientos</Text>
+                </View>
+                <View style={styles.statsCard}>
+                  <View style={styles.statsIconContainer}>
+                    <Ionicons name="trending-up" size={28} color="#D4FF00" />
+                  </View>
+                  <Text style={styles.statsValue}>85%</Text>
+                  <Text style={styles.statsLabel}>Meta semanal</Text>
+                </View>
+              </View>
+              
+              {/* Racha de días */}
+              <View style={styles.streakCard}>
+                <View style={styles.streakLeft}>
+                  <Ionicons name="flame" size={32} color="#FF6B6B" />
+                  <View style={styles.streakInfo}>
+                    <Text style={styles.streakValue}>7 días</Text>
+                    <Text style={styles.streakLabel}>Racha actual 🔥</Text>
+                  </View>
+                </View>
+                <View style={styles.streakDays}>
+                  {['L', 'M', 'X', 'J', 'V', 'S', 'D'].map((day, index) => (
+                    <View 
+                      key={index} 
+                      style={[
+                        styles.streakDay,
+                        index < 5 && styles.streakDayActive
+                      ]}
+                    >
+                      <Text style={[
+                        styles.streakDayText,
+                        index < 5 && styles.streakDayTextActive
+                      ]}>{day}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
             </View>
           </>
         )}
@@ -987,6 +1058,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212,255,0,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  menuAvatarImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   menuUserName: {
     fontSize: 18,
@@ -1062,5 +1139,88 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#000000',
+  },
+  // Estadísticas
+  statsContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 12,
+  },
+  statsCard: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  statsIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  statsValue: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  statsLabel: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.6)',
+    textAlign: 'center',
+  },
+  streakCard: {
+    backgroundColor: 'rgba(255,107,107,0.1)',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,107,107,0.3)',
+  },
+  streakLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 16,
+  },
+  streakInfo: {
+    flex: 1,
+  },
+  streakValue: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  streakLabel: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.7)',
+  },
+  streakDays: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  streakDay: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  streakDayActive: {
+    backgroundColor: '#FF6B6B',
+  },
+  streakDayText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.5)',
+  },
+  streakDayTextActive: {
+    color: '#FFFFFF',
   },
 });

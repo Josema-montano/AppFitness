@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   createUserWithEmailAndPassword, 
@@ -8,7 +9,8 @@ import {
   updateProfile
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { auth, db, storage } from '../config/firebase';
 import { 
   getEjercicios, 
   getRutinas, 
@@ -406,6 +408,91 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Subir imagen de perfil - para web usa base64, para móvil usa Storage
+  const uploadProfileImage = async (imageUri) => {
+    if (!user) return null;
+    
+    try {
+      // Para web, convertir a base64 y guardar directamente (evita CORS)
+      if (Platform.OS === 'web') {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            // Retornar el data URL (base64)
+            resolve(reader.result);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+      
+      // Para móvil, usar Firebase Storage
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      
+      // Crear referencia en Storage
+      const imageRef = ref(storage, `avatars/${user.id}_${Date.now()}.jpg`);
+      
+      // Subir imagen
+      await uploadBytes(imageRef, blob);
+      
+      // Obtener URL de descarga
+      const downloadURL = await getDownloadURL(imageRef);
+      
+      return downloadURL;
+    } catch (error) {
+      console.error('Error subiendo imagen:', error);
+      return null;
+    }
+  };
+
+  // Actualizar perfil del usuario (nombre y avatar)
+  const updateUserProfile = async (profileData) => {
+    if (!user) return false;
+    
+    let avatarUrl = profileData.avatar || user.avatar;
+    
+    // Si es una imagen local (no URL de internet), subirla a Storage
+    if (profileData.localImage) {
+      const uploadedUrl = await uploadProfileImage(profileData.localImage);
+      if (uploadedUrl) {
+        avatarUrl = uploadedUrl;
+      } else {
+        console.error('Error subiendo imagen, usando avatar anterior');
+      }
+    }
+    
+    const updatedUser = {
+      ...user,
+      nombre: profileData.nombre || user.nombre,
+      avatar: avatarUrl,
+    };
+    
+    setUser(updatedUser);
+    
+    // Actualizar en Firestore
+    try {
+      await setDoc(doc(db, 'usuarios', user.id), updatedUser, { merge: true });
+      
+      // También actualizar en Firebase Auth si es posible
+      // Solo actualizar photoURL si no es base64 (las URLs base64 son muy largas)
+      if (auth.currentUser) {
+        const isBase64 = avatarUrl && avatarUrl.startsWith('data:');
+        await updateProfile(auth.currentUser, {
+          displayName: profileData.nombre,
+          ...(isBase64 ? {} : { photoURL: avatarUrl }),
+        });
+      }
+      return true;
+    } catch (error) {
+      console.error('Error actualizando perfil:', error);
+      return false;
+    }
+  };
+
   // Cargar favoritos y rutinas del usuario desde Firebase
   const loadUserDataFromFirebase = useCallback(async (userId) => {
     try {
@@ -463,6 +550,7 @@ export const AppProvider = ({ children }) => {
       
       // Stats
       updateUserStats,
+      updateUserProfile,
       
       // Data desde Firebase
       ejerciciosDisponibles,

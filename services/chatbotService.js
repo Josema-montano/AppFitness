@@ -137,6 +137,13 @@ export const enviarMensajeAlChatbot = async (mensaje, historialConversacion = []
     });
 
     if (!response.ok) {
+      // Manejar error 429 (límite de solicitudes excedido)
+      if (response.status === 429) {
+        console.log('Límite de API excedido, usando respuestas locales...');
+        const respuestaLocal = await generarRespuestaLocalConRutinas(mensaje);
+        respuestaLocal.respuesta = '⚠️ *Estoy en modo offline por alta demanda*\n\n' + respuestaLocal.respuesta;
+        return respuestaLocal;
+      }
       throw new Error(`Error de API: ${response.status}`);
     }
 

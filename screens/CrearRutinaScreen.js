@@ -11,11 +11,11 @@ import {
   Modal
 } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
-import { useApp, ejerciciosDisponibles } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CrearRutinaScreen({ navigation }) {
-  const { crearRutina, user } = useApp();
+  const { crearRutina, user, ejerciciosDisponibles } = useApp();
   
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -23,12 +23,13 @@ export default function CrearRutinaScreen({ navigation }) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Cardio');
   const [ejerciciosSeleccionados, setEjerciciosSeleccionados] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
 
   const niveles = ['Principiante', 'Intermedio', 'Avanzado'];
-  const categorias = Object.keys(ejerciciosDisponibles);
+  const categorias = Object.keys(ejerciciosDisponibles || {});
 
   useEffect(() => {
     Animated.parallel([
@@ -100,11 +101,7 @@ export default function CrearRutinaScreen({ navigation }) {
 
     try {
       await crearRutina(nuevaRutina);
-      Alert.alert(
-        '¡Rutina creada!', 
-        'Tu rutina ha sido guardada exitosamente',
-        [{ text: 'Ver mis rutinas', onPress: () => navigation.goBack() }]
-      );
+      setSuccessModalVisible(true);
     } catch (error) {
       Alert.alert('Error', 'No se pudo guardar la rutina');
     }
@@ -348,6 +345,36 @@ export default function CrearRutinaScreen({ navigation }) {
               <Text style={styles.modalDoneText}>
                 Listo ({ejerciciosSeleccionados.length} ejercicios)
               </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal de éxito */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={successModalVisible}
+        onRequestClose={() => {
+          setSuccessModalVisible(false);
+          navigation.goBack();
+        }}
+      >
+        <View style={styles.successModalOverlay}>
+          <View style={styles.successModalContent}>
+            <View style={styles.successIconContainer}>
+              <Ionicons name="checkmark-circle" size={64} color="#D4FF00" />
+            </View>
+            <Text style={styles.successTitle}>¡Rutina creada!</Text>
+            <Text style={styles.successMessage}>Tu rutina ha sido guardada exitosamente</Text>
+            <Pressable 
+              style={styles.successButton}
+              onPress={() => {
+                setSuccessModalVisible(false);
+                navigation.getParent()?.navigate('Explorar');
+              }}
+            >
+              <Text style={styles.successButtonText}>Ver mis rutinas</Text>
             </Pressable>
           </View>
         </View>
@@ -728,6 +755,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalDoneText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#000000',
+  },
+  successModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  successModalContent: {
+    backgroundColor: '#1C1C1E',
+    borderRadius: 24,
+    padding: 32,
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 320,
+  },
+  successIconContainer: {
+    marginBottom: 20,
+  },
+  successTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  successMessage: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.7)',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  successButton: {
+    backgroundColor: '#D4FF00',
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    width: '100%',
+    alignItems: 'center',
+  },
+  successButtonText: {
     fontSize: 16,
     fontWeight: '700',
     color: '#000000',

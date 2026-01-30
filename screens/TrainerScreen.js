@@ -60,6 +60,7 @@ export default function TrainerScreen({ route, navigation }) {
   const { trainerName } = route.params;
   const { trainersDB, dataLoaded } = useApp();
   const [trainerRutinas, setTrainerRutinas] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
   
   // Usar datos de Firebase si están disponibles
   const trainersData = dataLoaded && Object.keys(trainersDB).length > 0 ? trainersDB : trainersDataDefault;
@@ -222,8 +223,13 @@ export default function TrainerScreen({ route, navigation }) {
           <Text style={styles.bioText}>{trainer.bio}</Text>
           
           <View style={styles.actionButtons}>
-            <Pressable style={styles.followButton}>
-              <Text style={styles.followButtonText}>Seguir</Text>
+            <Pressable 
+              style={[styles.followButton, isFollowing && styles.followButtonActive]}
+              onPress={() => setIsFollowing(!isFollowing)}
+            >
+              <Text style={[styles.followButtonText, isFollowing && styles.followButtonTextActive]}>
+                {isFollowing ? 'Siguiendo' : 'Seguir'}
+              </Text>
             </Pressable>
             <Pressable style={styles.shareButton}>
               <Text style={styles.shareButtonText}>Compartir</Text>
@@ -391,10 +397,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
+  followButtonActive: {
+    backgroundColor: 'rgba(212, 255, 0, 0.2)',
+    borderWidth: 1,
+    borderColor: '#D4FF00',
+  },
   followButtonText: {
     fontSize: 15,
     fontWeight: '700',
     color: '#000000',
+  },
+  followButtonTextActive: {
+    color: '#D4FF00',
   },
   shareButton: {
     flex: 1,

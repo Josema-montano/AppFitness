@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Íconos - FitnessPro</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: white; }
+        .canvas-container { display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
+        canvas { border: 1px solid #333; }
+        button { background: #D4FF00; color: black; padding: 10px 20px; border: none; cursor: pointer; margin: 5px; font-weight: bold; }
+        h2 { color: #D4FF00; }
+    </style>
+</head>
+<body>
+    <h1>🏋️ Generador de Íconos - FitnessPro</h1>
+    <p>Haz clic en cada botón para descargar los íconos y reemplázalos en la carpeta <code>assets/</code></p>
+    
+    <h2>1. Ícono Principal (1024x1024)</h2>
+    <div class="canvas-container">
+        <canvas id="icon" width="1024" height="1024"></canvas>
+    </div>
+    <button onclick="download('icon', 'icon.png')">📥 Descargar icon.png</button>
+    
+    <h2>2. Adaptive Icon (1024x1024)</h2>
+    <div class="canvas-container">
+        <canvas id="adaptive" width="1024" height="1024"></canvas>
+    </div>
+    <button onclick="download('adaptive', 'adaptive-icon.png')">📥 Descargar adaptive-icon.png</button>
+    
+    <h2>3. Splash Icon (512x512)</h2>
+    <div class="canvas-container">
+        <canvas id="splash" width="512" height="512"></canvas>
+    </div>
+    <button onclick="download('splash', 'splash-icon.png')">📥 Descargar splash-icon.png</button>
+    
+    <h2>4. Favicon (48x48)</h2>
+    <div class="canvas-container">
+        <canvas id="favicon" width="48" height="48"></canvas>
+    </div>
+    <button onclick="download('favicon', 'favicon.png')">📥 Descargar favicon.png</button>
+
+    <script>
+        // Función para dibujar el ícono de mancuerna/barbell
+        function drawBarbell(ctx, size, isAdaptive = false) {
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const scale = size / 1024;
+            
+            // Fondo
+            if (isAdaptive) {
+                // Fondo transparente para adaptive icon
+                ctx.fillStyle = '#D4FF00';
+            } else {
+                ctx.fillStyle = '#000000';
+            }
+            ctx.fillRect(0, 0, size, size);
+            
+            // Círculo de fondo verde lima
+            if (!isAdaptive) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 380 * scale, 0, Math.PI * 2);
+                ctx.fillStyle = '#D4FF00';
+                ctx.fill();
+            }
+            
+            // Dibujar mancuerna
+            ctx.fillStyle = '#000000';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 40 * scale;
+            ctx.lineCap = 'round';
+            
+            // Barra central
+            ctx.beginPath();
+            ctx.moveTo(centerX - 200 * scale, centerY);
+            ctx.lineTo(centerX + 200 * scale, centerY);
+            ctx.stroke();
+            
+            // Pesos izquierdos
+            ctx.fillRect(centerX - 280 * scale, centerY - 120 * scale, 60 * scale, 240 * scale);
+            ctx.fillRect(centerX - 350 * scale, centerY - 150 * scale, 50 * scale, 300 * scale);
+            
+            // Pesos derechos
+            ctx.fillRect(centerX + 220 * scale, centerY - 120 * scale, 60 * scale, 240 * scale);
+            ctx.fillRect(centerX + 300 * scale, centerY - 150 * scale, 50 * scale, 300 * scale);
+        }
+        
+        // Generar todos los íconos
+        function generateIcons() {
+            // Icon principal
+            const iconCtx = document.getElementById('icon').getContext('2d');
+            drawBarbell(iconCtx, 1024, false);
+            
+            // Adaptive icon
+            const adaptiveCtx = document.getElementById('adaptive').getContext('2d');
+            drawBarbell(adaptiveCtx, 1024, true);
+            
+            // Splash
+            const splashCtx = document.getElementById('splash').getContext('2d');
+            drawBarbell(splashCtx, 512, false);
+            
+            // Favicon
+            const faviconCtx = document.getElementById('favicon').getContext('2d');
+            drawBarbell(faviconCtx, 48, false);
+        }
+        
+        // Descargar imagen
+        function download(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Ejecutar al cargar
+        generateIcons();
+    </script>
+</body>
+</html>

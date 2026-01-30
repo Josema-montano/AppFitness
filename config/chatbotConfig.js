@@ -7,8 +7,8 @@
 
 export const CHATBOT_CONFIG = {
   // API Key de OpenAI - ¡NUNCA compartas esta key públicamente!
-  // Reemplaza 'TU_API_KEY_AQUI' con tu API key real de OpenAI
-  OPENAI_API_KEY: 'TU_API_KEY_AQUI',
+  // Configura tu API key en una variable de entorno o reemplaza aquí
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY || 'TU_API_KEY_AQUI',
   
   // Modelo a usar (puedes cambiar a 'gpt-4' para respuestas más avanzadas)
   MODEL: 'gpt-3.5-turbo',
